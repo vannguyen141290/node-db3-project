@@ -14,6 +14,7 @@ function getRows(id) {
     .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
     .select('sc.*', 'st.step_id', 'st.step_number', 'st.instructions')
     .where('sc.scheme_id', id)
+    .orderBy('st.step_number')
 }
 
 async function findById(scheme_id) {
