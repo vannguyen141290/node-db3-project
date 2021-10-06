@@ -1,28 +1,9 @@
-// DO NOT CHANGE THIS FILE
 const express = require('express')
 const { checkSchemeId, validateScheme, validateStep } = require('./scheme-middleware')
 const Schemes = require('./scheme-model.js')
 
 const router = express.Router()
 
-/**
-  [GET] /api/schemes
-
-  response:
-  [
-    {
-      "scheme_id": 1,
-      "scheme_name": "World Domination",
-      "number_of_steps": 3
-    },
-    {
-      "scheme_id": 2,
-      "scheme_name": "Get Rich Quick",
-      "number_of_steps": 2
-    },
-    // etc
-  ]
- */
 router.get('/', (req, res, next) => {
   Schemes.find()
     .then(schemes => {
@@ -31,30 +12,8 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
-/*
-  [GET] /api/schemes/2
-
-  response:
-  {
-    "scheme_id": 2,
-    "scheme_name": "Get Rich Quick",
-    "steps": [
-      {
-          "step_id": 5,
-          "step_number": 1,
-          "instructions": "collect all the sheep in Scotland"
-      },
-      {
-          "step_id": 4,
-          "step_number": 2,
-          "instructions": "profit"
-      }
-    ]
-  }
-*/
 router.get('/:scheme_id', checkSchemeId, (req, res, next) => {
   const { scheme_id } = req.params
-
   Schemes.findById(scheme_id)
     .then(scheme => {
       res.json(scheme)
