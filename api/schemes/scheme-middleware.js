@@ -3,9 +3,10 @@ const db = require('../../data/db-config')
 const checkSchemeId = async (req, res, next) => {
   try {
     const { scheme_id } = req.params
-    const scheme = db('schemes').where({ "id": scheme_id }).first()
-    if (scheme) {
-      req.found = scheme
+    const isExist = await db('schemes')
+      .where({ "scheme_id": scheme_id })
+      .first()
+    if (isExist) {
       next()
     } else {
       next({
@@ -42,6 +43,8 @@ const validateStep = (req, res, next) => {
       || instructions === ''
       || typeof instructions !== 'string'
       || typeof step_number !== 'number'
+      || step_number === undefined
+      || step_number < 0
     ) {
       next({
         status: 400,
