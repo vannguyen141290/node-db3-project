@@ -44,14 +44,16 @@ async function findById(scheme_id) {
 async function findSteps(scheme_id) {
   const rows = await getRows(scheme_id)
 
-  const steps = rows.map(row => {
-    return ({
-      step_id: row.step_id,
-      step_number: row.step_number,
-      instructions: row.instructions,
-      scheme_name: row.scheme_name
+  const steps = rows
+    .filter(row => row.step_id !== null)
+    .map(row => {
+      return ({
+        step_id: row.step_id,
+        step_number: row.step_number,
+        instructions: row.instructions,
+        scheme_name: row.scheme_name
+      })
     })
-  })
 
   return steps
 }
